@@ -1,56 +1,66 @@
 // 工具功能JavaScript文件
 
-// 标签页切换功能
-function showCategory(categoryId) {
-    // 隐藏所有分类
-    const categories = document.querySelectorAll('.tool-category');
-    categories.forEach(cat => cat.classList.remove('active'));
-    
-    // 显示选中的分类
-    const targetCategory = document.getElementById(categoryId);
-    if (targetCategory) {
-        targetCategory.classList.add('active');
-    }
-    
-    // 更新导航按钮状态
-    const navBtns = document.querySelectorAll('.nav-btn');
-    navBtns.forEach(btn => btn.classList.remove('active'));
-    
-    const activeBtn = document.querySelector(`[onclick="showCategory('${categoryId}')"]`);
-    if (activeBtn) {
-        activeBtn.classList.add('active');
-    }
-    
-    // 显示第一个工具面板
-    const firstToolBtn = targetCategory.querySelector('.tool-btn');
-    if (firstToolBtn) {
-        firstToolBtn.click();
-    }
-}
-
+// 工具显示功能
 function showTool(toolId) {
-    // 获取当前分类
-    const activeCategory = document.querySelector('.tool-category.active');
-    if (!activeCategory) return;
+    // 显示工具工作区
+    const workspace = document.getElementById('tool-workspace');
+    workspace.style.display = 'block';
     
-    // 隐藏当前分类下的所有工具面板
-    const panels = activeCategory.querySelectorAll('.tool-panel');
-    panels.forEach(panel => panel.style.display = 'none');
+    // 隐藏所有工具面板
+    const panels = document.querySelectorAll('.tool-panel');
+    panels.forEach(panel => {
+        panel.classList.remove('active');
+    });
     
     // 显示选中的工具面板
-    const targetPanel = activeCategory.querySelector(`#${toolId}`);
+    const targetPanel = document.getElementById(toolId);
     if (targetPanel) {
-        targetPanel.style.display = 'block';
+        targetPanel.classList.add('active');
     }
     
-    // 更新工具按钮状态
-    const toolBtns = activeCategory.querySelectorAll('.tool-btn');
-    toolBtns.forEach(btn => btn.classList.remove('active'));
+    // 更新工具卡片状态
+    const toolCards = document.querySelectorAll('.tool-card');
+    toolCards.forEach(card => card.classList.remove('active'));
     
-    const activeBtn = activeCategory.querySelector(`[onclick="showTool('${toolId}')"]`);
-    if (activeBtn) {
-        activeBtn.classList.add('active');
+    const activeCard = document.querySelector(`[onclick="showTool('${toolId}')"]`);
+    if (activeCard) {
+        activeCard.classList.add('active');
     }
+    
+    // 更新标题
+    const titles = {
+        'base64': 'Base64编解码',
+        'url': 'URL编解码',
+        'hash': 'Hash生成器',
+        'text': '文本处理',
+        'password': '密码生成器',
+        'markdown': 'Markdown转换',
+        'json': 'JSON格式化',
+        'timestamp': '时间戳转换',
+        'color': '颜色转换',
+        'calculator': '高级计算器',
+        'unit': '单位转换',
+        'regex': '正则测试',
+        'uuid': 'UUID生成器',
+        'lottery': '随机数生成'
+    };
+    
+    const titleElement = document.getElementById('current-tool-title');
+    if (titleElement && titles[toolId]) {
+        titleElement.textContent = titles[toolId];
+    }
+    
+    // 滚动到工具区域
+    workspace.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function closeTool() {
+    const workspace = document.getElementById('tool-workspace');
+    workspace.style.display = 'none';
+    
+    // 清除工具卡片状态
+    const toolCards = document.querySelectorAll('.tool-card');
+    toolCards.forEach(card => card.classList.remove('active'));
 }
 
 // 备用的简单QR码图案生成
@@ -902,6 +912,178 @@ function testRegex() {
     }
 }
 
+// 新增工具功能
+function textToTitle() {
+    const input = document.getElementById('text-input').value;
+    const result = input.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+    document.getElementById('text-output').value = result;
+    showNotification('已转换为首字母大写', 'success');
+}
+
+function updateTextStats() {
+    const input = document.getElementById('text-input').value;
+    const stats = {
+        chars: input.length,
+        words: input.trim() ? input.trim().split(/\s+/).length : 0,
+        lines: input.split('\n').length,
+        paragraphs: input.split(/\n\s*\n/).filter(p => p.trim()).length
+    };
+    
+    document.getElementById('char-count').textContent = stats.chars;
+    document.getElementById('word-count').textContent = stats.words;
+    document.getElementById('line-count').textContent = stats.lines;
+    document.getElementById('paragraph-count').textContent = stats.paragraphs;
+}
+
+function generateMultiplePasswords() {
+    const container = document.getElementById('multiple-passwords');
+    container.innerHTML = '';
+    
+    for (let i = 0; i < 5; i++) {
+        generatePassword();
+        const password = document.getElementById('generated-password').value;
+        if (password) {
+            const item = document.createElement('div');
+            item.className = 'result-item';
+            item.innerHTML = `
+                <span>${password}</span>
+                <button class="btn-copy" onclick="copyToClipboard('${password}')">复制</button>
+            `;
+            container.appendChild(item);
+        }
+    }
+    
+    showNotification('已生成5个密码', 'success');
+}
+
+function generateUUID() {
+    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+    
+    document.getElementById('uuid-result').value = uuid;
+    showNotification('UUID生成成功', 'success');
+}
+
+function copyUUID() {
+    const uuid = document.getElementById('uuid-result').value;
+    if (uuid) {
+        navigator.clipboard.writeText(uuid).then(() => {
+            showNotification('UUID已复制到剪贴板', 'success');
+        });
+    }
+}
+
+function generateMultipleUUIDs() {
+    const container = document.getElementById('multiple-uuids');
+    container.innerHTML = '';
+    
+    for (let i = 0; i < 5; i++) {
+        generateUUID();
+        const uuid = document.getElementById('uuid-result').value;
+        if (uuid) {
+            const item = document.createElement('div');
+            item.className = 'result-item';
+            item.innerHTML = `
+                <span>${uuid}</span>
+                <button class="btn-copy" onclick="copyToClipboard('${uuid}')">复制</button>
+            `;
+            container.appendChild(item);
+        }
+    }
+    
+    showNotification('已生成5个UUID', 'success');
+}
+
+function generateRandomNumbers() {
+    const min = parseInt(document.getElementById('min-value').value);
+    const max = parseInt(document.getElementById('max-value').value);
+    const count = parseInt(document.getElementById('count-value').value);
+    
+    if (min >= max) {
+        showNotification('最小值必须小于最大值', 'warning');
+        return;
+    }
+    
+    const numbers = [];
+    for (let i = 0; i < count; i++) {
+        numbers.push(Math.floor(Math.random() * (max - min + 1)) + min);
+    }
+    
+    const resultContainer = document.getElementById('lottery-result');
+    resultContainer.innerHTML = `
+        <h4>随机数结果</h4>
+        <div class="lottery-numbers">
+            ${numbers.map(num => `<div class="lottery-number">${num}</div>`).join('')}
+        </div>
+    `;
+    
+    showNotification('随机数生成成功', 'success');
+}
+
+function generateLottery() {
+    const min = parseInt(document.getElementById('min-value').value);
+    const max = parseInt(document.getElementById('max-value').value);
+    const count = parseInt(document.getElementById('count-value').value);
+    
+    if (count > (max - min + 1)) {
+        showNotification('生成个数不能超过数值范围', 'warning');
+        return;
+    }
+    
+    const numbers = [];
+    const available = [];
+    for (let i = min; i <= max; i++) {
+        available.push(i);
+    }
+    
+    for (let i = 0; i < count; i++) {
+        const index = Math.floor(Math.random() * available.length);
+        numbers.push(available.splice(index, 1)[0]);
+    }
+    
+    const resultContainer = document.getElementById('lottery-result');
+    resultContainer.innerHTML = `
+        <h4>🎉 抽奖结果</h4>
+        <div class="lottery-numbers">
+            ${numbers.map(num => `<div class="lottery-number">${num}</div>`).join('')}
+        </div>
+    `;
+    
+    showNotification('抽奖完成！', 'success');
+}
+
+function switchTab(tabId) {
+    // 隐藏所有标签内容
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabContents.forEach(content => content.classList.remove('active'));
+    
+    // 显示选中的标签内容
+    const targetContent = document.getElementById(tabId);
+    if (targetContent) {
+        targetContent.classList.add('active');
+    }
+    
+    // 更新标签按钮状态
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    tabBtns.forEach(btn => btn.classList.remove('active'));
+    
+    const activeBtn = document.querySelector(`[onclick="switchTab('${tabId}')"]`);
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+    }
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        showNotification('已复制到剪贴板', 'success');
+    }).catch(() => {
+        showNotification('复制失败', 'error');
+    });
+}
+
 // 页面加载完成后的初始化
 document.addEventListener('DOMContentLoaded', function() {
     // 初始化颜色选择器
@@ -913,9 +1095,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 初始化单位转换选项
     updateUnitOptions();
-    
-    // 显示默认分类和工具
-    showCategory('encode');
     
     // 为计算器添加键盘支持
     document.addEventListener('keydown', function(event) {
