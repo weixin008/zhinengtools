@@ -1,75 +1,55 @@
 // 工具功能JavaScript文件
 
-// QR码生成器
-function generateQR() {
-    const text = document.getElementById('qr-text').value.trim();
-    const size = parseInt(document.getElementById('qr-size').value);
+// 标签页切换功能
+function showCategory(categoryId) {
+    // 隐藏所有分类
+    const categories = document.querySelectorAll('.tool-category');
+    categories.forEach(cat => cat.classList.remove('active'));
     
-    if (!text) {
-        showNotification('请输入要生成二维码的内容', 'warning');
-        return;
+    // 显示选中的分类
+    const targetCategory = document.getElementById(categoryId);
+    if (targetCategory) {
+        targetCategory.classList.add('active');
     }
     
-    const canvas = document.getElementById('qr-canvas');
-    const resultDiv = document.getElementById('qr-result');
+    // 更新导航按钮状态
+    const navBtns = document.querySelectorAll('.nav-btn');
+    navBtns.forEach(btn => btn.classList.remove('active'));
     
-    // 检查是否有QRCode库
-    if (typeof QRCode === 'undefined') {
-        console.warn('QRCode库未加载，使用备用方案');
-        showNotification('QRCode库加载中，请稍后重试', 'warning');
-        return;
+    const activeBtn = document.querySelector(`[onclick="showCategory('${categoryId}')"]`);
+    if (activeBtn) {
+        activeBtn.classList.add('active');
     }
     
-    try {
-        // 清除之前的内容
-        canvas.width = size;
-        canvas.height = size;
-        
-        // 使用真正的QRCode库
-        QRCode.toCanvas(canvas, text, {
-            width: size,
-            height: size,
-            color: {
-                dark: '#000000',
-                light: '#FFFFFF'
-            },
-            errorCorrectionLevel: 'M',
-            margin: 2,
-            scale: 4
-        }, function (error) {
-            if (error) {
-                console.error('QR码生成失败:', error);
-                showNotification('二维码生成失败：' + error.message, 'error');
-                return;
-            }
-            
-            // 显示结果区域
-            resultDiv.style.display = 'block';
-            
-            // 添加下载功能
-            const downloadBtn = document.getElementById('qr-download');
-            if (downloadBtn) {
-                downloadBtn.onclick = function() {
-                    const link = document.createElement('a');
-                    link.download = 'qrcode.png';
-                    link.href = canvas.toDataURL();
-                    link.click();
-                };
-            }
-            
-            showNotification('二维码生成成功！内容：' + text.substring(0, 20) + (text.length > 20 ? '...' : ''), 'success');
-            
-            // 统计使用
-            if (typeof trackUserBehavior === 'function') {
-                trackUserBehavior('qr_generated', {
-                    textLength: text.length,
-                    size: size
-                });
-            }
-        });
-    } catch (error) {
-        console.error('QR码生成异常:', error);
-        showNotification('二维码生成异常：' + error.message, 'error');
+    // 显示第一个工具面板
+    const firstToolBtn = targetCategory.querySelector('.tool-btn');
+    if (firstToolBtn) {
+        firstToolBtn.click();
+    }
+}
+
+function showTool(toolId) {
+    // 获取当前分类
+    const activeCategory = document.querySelector('.tool-category.active');
+    if (!activeCategory) return;
+    
+    // 隐藏当前分类下的所有工具面板
+    const panels = activeCategory.querySelectorAll('.tool-panel');
+    panels.forEach(panel => panel.style.display = 'none');
+    
+    // 显示选中的工具面板
+    const targetPanel = activeCategory.querySelector(`#${toolId}`);
+    if (targetPanel) {
+        targetPanel.style.display = 'block';
+    }
+    
+    // 更新工具按钮状态
+    const toolBtns = activeCategory.querySelectorAll('.tool-btn');
+    toolBtns.forEach(btn => btn.classList.remove('active'));
+    
+    const activeBtn = activeCategory.querySelector(`[onclick="showTool('${toolId}')"]`);
+    if (activeBtn) {
+        activeBtn.classList.add('active');
     }
 }
 
@@ -604,6 +584,114 @@ function getTextStats() {
     showNotification('文本统计完成', 'success');
 }
 
+// 实时文本统计功能
+function getTextStatsLive() {
+    const input = document.getElementById('stat-input').value;
+    const stats = {
+        chars: input.length,
+        charsNoSpaces: input.replace(/\s/g, '').length,
+        words: input.trim() ? input.trim().split(/\s+/).length : 0,
+        lines: input.split('\n').length
+    };
+    
+    document.getElementById('char-count').textContent = stats.chars;
+    document.getElementById('char-no-space').textContent = stats.charsNoSpaces;
+    document.getElementById('word-count').textContent = stats.words;
+    document.getElementById('line-count').textContent = stats.lines;
+}
+
+// 增强的Base64功能
+function clearBase64() {
+    document.getElementById('base64-input').value = '';
+    document.getElementById('base64-output').value = '';
+    showNotification('已清空内容', 'success');
+}
+
+// 单位转换功能
+const unitData = {
+    length: {
+        'm': { name: '米', factor: 1 },
+        'cm': { name: '厘米', factor: 0.01 },
+        'mm': { name: '毫米', factor: 0.001 },
+        'km': { name: '公里', factor: 1000 },
+        'inch': { name: '英寸', factor: 0.0254 },
+        'ft': { name: '英尺', factor: 0.3048 },
+        'yard': { name: '码', factor: 0.9144 }
+    },
+    weight: {
+        'kg': { name: '公斤', factor: 1 },
+        'g': { name: '克', factor: 0.001 },
+        'lb': { name: '磅', factor: 0.453592 },
+        'oz': { name: '盎司', factor: 0.0283495 },
+        't': { name: '吨', factor: 1000 }
+    },
+    temperature: {
+        'c': { name: '摄氏度' },
+        'f': { name: '华氏度' },
+        'k': { name: '开尔文' }
+    }
+};
+
+function updateUnitOptions() {
+    const unitType = document.getElementById('unit-type').value;
+    const fromUnit = document.getElementById('from-unit');
+    const toUnit = document.getElementById('to-unit');
+    
+    // 清空现有选项
+    fromUnit.innerHTML = '';
+    toUnit.innerHTML = '';
+    
+    // 添加新选项
+    for (const [key, value] of Object.entries(unitData[unitType])) {
+        const option1 = new Option(value.name, key);
+        const option2 = new Option(value.name, key);
+        fromUnit.add(option1);
+        toUnit.add(option2);
+    }
+}
+
+function convertUnit() {
+    const inputValue = parseFloat(document.getElementById('convert-input').value);
+    const unitType = document.getElementById('unit-type').value;
+    const fromUnit = document.getElementById('from-unit').value;
+    const toUnit = document.getElementById('to-unit').value;
+    
+    if (isNaN(inputValue)) {
+        showNotification('请输入有效数值', 'warning');
+        return;
+    }
+    
+    let result;
+    
+    if (unitType === 'temperature') {
+        result = convertTemperature(inputValue, fromUnit, toUnit);
+    } else {
+        const fromFactor = unitData[unitType][fromUnit].factor;
+        const toFactor = unitData[unitType][toUnit].factor;
+        result = inputValue * fromFactor / toFactor;
+    }
+    
+    document.getElementById('convert-result').value = result.toFixed(6).replace(/\.?0+$/, '');
+    showNotification('转换完成', 'success');
+}
+
+function convertTemperature(value, from, to) {
+    // 先转换为摄氏度
+    let celsius;
+    switch (from) {
+        case 'c': celsius = value; break;
+        case 'f': celsius = (value - 32) * 5/9; break;
+        case 'k': celsius = value - 273.15; break;
+    }
+    
+    // 再从摄氏度转换为目标单位
+    switch (to) {
+        case 'c': return celsius;
+        case 'f': return celsius * 9/5 + 32;
+        case 'k': return celsius + 273.15;
+    }
+}
+
 // 颜色选择器功能
 function initColorPicker() {
     const colorInput = document.getElementById('color-picker-input');
@@ -822,6 +910,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // 更新时间戳显示
     updateCurrentTimestamp();
     setInterval(updateCurrentTimestamp, 1000);
+    
+    // 初始化单位转换选项
+    updateUnitOptions();
+    
+    // 显示默认分类和工具
+    showCategory('encode');
     
     // 为计算器添加键盘支持
     document.addEventListener('keydown', function(event) {

@@ -31,277 +31,419 @@
         <!-- 页面标题 -->
         <section class="hero">
             <div class="container">
-                <h2>知能在线工具集合</h2>
-                <p>精选实用工具，一站式解决您的日常需求</p>
+                <h2>知能在线工具箱</h2>
+                <p>专业实用工具集合，简洁高效，一键直达</p>
             </div>
         </section>
 
         <div class="container">
-            <!-- 工具网格布局 -->
-            <div class="tools-grid">
+            <!-- 工具分类导航 -->
+            <div class="tools-nav">
+                <button class="nav-btn active" onclick="showCategory('encode')">编码解码</button>
+                <button class="nav-btn" onclick="showCategory('text')">文本处理</button>
+                <button class="nav-btn" onclick="showCategory('convert')">格式转换</button>
+                <button class="nav-btn" onclick="showCategory('calc')">计算工具</button>
+                <button class="nav-btn" onclick="showCategory('dev')">开发工具</button>
+            </div>
+
+            <!-- 工具内容区域 -->
+            <div class="tools-content">
                 
-                <!-- 第一行：最常用工具 -->
-                <div class="tool-card" id="qr-generator">
-                    <div class="tool-header">
-                        <h3>🔳 二维码生成器</h3>
-                        <span class="tool-badge">热门</span>
+                <!-- 编码解码类 -->
+                <div id="encode" class="tool-category active">
+                    <div class="tool-buttons">
+                        <button class="tool-btn" onclick="showTool('base64')">Base64编解码</button>
+                        <button class="tool-btn" onclick="showTool('url')">URL编解码</button>
+                        <button class="tool-btn" onclick="showTool('hash')">Hash生成</button>
                     </div>
-                    <div class="tool-content">
-                        <textarea id="qr-text" placeholder="输入文本、网址等内容..." rows="2"></textarea>
-                        <div class="tool-controls">
-                            <select id="qr-size">
-                                <option value="200">200x200</option>
-                                <option value="300" selected>300x300</option>
-                                <option value="400">400x400</option>
-                            </select>
-                            <button onclick="generateQR()" class="btn-primary">生成</button>
+                    
+                    <!-- Base64工具 -->
+                    <div id="base64" class="tool-panel">
+                        <div class="panel-header">
+                            <h3>🔒 Base64 编解码</h3>
+                            <p>快速进行Base64编码和解码操作</p>
                         </div>
-                        <div id="qr-result" class="tool-result" style="display: none;">
-                            <canvas id="qr-canvas"></canvas>
-                            <button id="qr-download" class="btn-small">下载</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tool-card" id="url-tools">
-                    <div class="tool-header">
-                        <h3>🔗 URL编解码</h3>
-                        <span class="tool-badge">实用</span>
-                    </div>
-                    <div class="tool-content">
-                        <textarea id="url-input" placeholder="输入需要编码/解码的URL..." rows="2"></textarea>
-                        <div class="tool-controls">
-                            <button onclick="encodeURL()" class="btn-primary">编码</button>
-                            <button onclick="decodeURL()" class="btn-primary">解码</button>
-                        </div>
-                        <textarea id="url-output" placeholder="结果将显示在这里..." rows="2" readonly></textarea>
-                    </div>
-                </div>
-
-                <div class="tool-card" id="password-generator">
-                    <div class="tool-header">
-                        <h3>🔑 密码生成器</h3>
-                        <span class="tool-badge">安全</span>
-                    </div>
-                    <div class="tool-content">
-                        <div class="password-options">
-                            <div class="length-control">
-                                <label>长度: <span id="length-display">12</span></label>
-                                <input type="range" id="password-length" min="6" max="32" value="12" 
-                                       oninput="document.getElementById('length-display').textContent = this.value">
+                        <div class="panel-content">
+                            <div class="input-group">
+                                <label>输入内容</label>
+                                <textarea id="base64-input" placeholder="输入要编码或解码的内容..."></textarea>
                             </div>
-                            <div class="checkbox-group">
-                                <label><input type="checkbox" id="include-uppercase" checked> A-Z</label>
-                                <label><input type="checkbox" id="include-lowercase" checked> a-z</label>
-                                <label><input type="checkbox" id="include-numbers" checked> 0-9</label>
-                                <label><input type="checkbox" id="include-symbols"> !@#</label>
+                            <div class="button-group">
+                                <button class="btn-primary" onclick="encodeBase64()">编码</button>
+                                <button class="btn-secondary" onclick="decodeBase64()">解码</button>
+                                <button class="btn-outline" onclick="clearBase64()">清空</button>
+                            </div>
+                            <div class="input-group">
+                                <label>结果</label>
+                                <textarea id="base64-output" placeholder="结果将显示在这里..." readonly></textarea>
                             </div>
                         </div>
-                        <div class="tool-controls">
-                            <button onclick="generatePassword()" class="btn-primary">生成密码</button>
-                        </div>
-                        <div class="password-result">
-                            <input type="text" id="generated-password" readonly>
-                            <button onclick="copyPassword()" class="btn-small">复制</button>
-                        </div>
-                        <div id="password-strength" class="strength-meter"></div>
                     </div>
-                </div>
 
-                <!-- 第二行：编码解码工具 -->
-                <div class="tool-card" id="base64">
-                    <div class="tool-header">
-                        <h3>🔒 Base64编解码</h3>
-                    </div>
-                    <div class="tool-content">
-                        <textarea id="base64-input" placeholder="输入要编码或解码的内容..." rows="2"></textarea>
-                        <div class="tool-controls">
-                            <button onclick="encodeBase64()" class="btn-primary">编码</button>
-                            <button onclick="decodeBase64()" class="btn-primary">解码</button>
+                    <!-- URL工具 -->
+                    <div id="url" class="tool-panel" style="display: none;">
+                        <div class="panel-header">
+                            <h3>🔗 URL 编解码</h3>
+                            <p>处理URL中的特殊字符编码</p>
                         </div>
-                        <textarea id="base64-output" placeholder="结果将显示在这里..." rows="2" readonly></textarea>
-                    </div>
-                </div>
-
-                <div class="tool-card" id="json-formatter">
-                    <div class="tool-header">
-                        <h3>📄 JSON格式化</h3>
-                    </div>
-                    <div class="tool-content">
-                        <textarea id="json-input" placeholder='输入JSON: {"name":"张三"}' rows="2"></textarea>
-                        <div class="tool-controls">
-                            <button onclick="formatJSON()" class="btn-primary">格式化</button>
-                            <button onclick="minifyJSON()" class="btn-primary">压缩</button>
-                            <button onclick="validateJSON()" class="btn-secondary">验证</button>
-                        </div>
-                        <textarea id="json-output" placeholder="格式化结果..." rows="2" readonly></textarea>
-                        <div id="json-error" class="error-msg"></div>
-                    </div>
-                </div>
-
-                <div class="tool-card" id="hash-generator">
-                    <div class="tool-header">
-                        <h3>🔐 Hash生成器</h3>
-                        <span class="tool-badge">新增</span>
-                    </div>
-                    <div class="tool-content">
-                        <textarea id="hash-input" placeholder="输入要生成Hash的内容..." rows="2"></textarea>
-                        <div class="tool-controls">
-                            <button onclick="generateMD5()" class="btn-primary">MD5</button>
-                            <button onclick="generateSHA1()" class="btn-primary">SHA1</button>
-                            <button onclick="generateSHA256()" class="btn-primary">SHA256</button>
-                        </div>
-                        <input type="text" id="hash-output" placeholder="Hash结果..." readonly>
-                    </div>
-                </div>
-
-                <!-- 第三行：文本处理工具 -->
-                <div class="tool-card" id="text-tools">
-                    <div class="tool-header">
-                        <h3>📝 文本处理</h3>
-                    </div>
-                    <div class="tool-content">
-                        <textarea id="text-input" placeholder="输入要处理的文本..." rows="2"></textarea>
-                        <div class="tool-controls">
-                            <button onclick="textToUpper()" class="btn-small">大写</button>
-                            <button onclick="textToLower()" class="btn-small">小写</button>
-                            <button onclick="textReverse()" class="btn-small">反转</button>
-                            <button onclick="removeSpaces()" class="btn-small">去空格</button>
-                            <button onclick="getTextStats()" class="btn-secondary">统计</button>
-                        </div>
-                        <textarea id="text-output" placeholder="处理结果..." rows="2" readonly></textarea>
-                        <div id="text-stats" class="text-stats"></div>
-                    </div>
-                </div>
-
-                <div class="tool-card" id="color-picker">
-                    <div class="tool-header">
-                        <h3>🎨 颜色选择器</h3>
-                    </div>
-                    <div class="tool-content">
-                        <div class="color-input-group">
-                            <input type="color" id="color-picker-input" value="#3B82F6">
-                            <div class="color-preview" id="color-preview"></div>
-                        </div>
-                        <div class="color-values">
-                            <div class="color-value">
-                                <label>HEX:</label>
-                                <input type="text" id="hex-value" readonly>
+                        <div class="panel-content">
+                            <div class="input-group">
+                                <label>输入URL</label>
+                                <textarea id="url-input" placeholder="输入需要编码/解码的URL..."></textarea>
                             </div>
-                            <div class="color-value">
-                                <label>RGB:</label>
-                                <input type="text" id="rgb-value" readonly>
+                            <div class="button-group">
+                                <button class="btn-primary" onclick="encodeURL()">编码</button>
+                                <button class="btn-secondary" onclick="decodeURL()">解码</button>
                             </div>
-                            <div class="color-value">
-                                <label>HSL:</label>
-                                <input type="text" id="hsl-value" readonly>
+                            <div class="input-group">
+                                <label>结果</label>
+                                <textarea id="url-output" placeholder="结果将显示在这里..." readonly></textarea>
                             </div>
                         </div>
-                        <button onclick="copyColorValue('hex')" class="btn-small">复制HEX</button>
                     </div>
-                </div>
 
-                <div class="tool-card" id="timestamp-converter">
-                    <div class="tool-header">
-                        <h3>⏰ 时间戳转换</h3>
-                    </div>
-                    <div class="tool-content">
-                        <div class="time-group">
-                            <label>时间戳:</label>
-                            <input type="text" id="timestamp-input" placeholder="输入时间戳...">
-                            <button onclick="timestampToDate()" class="btn-small">转换</button>
+                    <!-- Hash工具 -->
+                    <div id="hash" class="tool-panel" style="display: none;">
+                        <div class="panel-header">
+                            <h3>🔐 Hash 生成器</h3>
+                            <p>生成MD5、SHA1、SHA256等哈希值</p>
                         </div>
-                        <div class="time-group">
-                            <label>日期时间:</label>
-                            <input type="datetime-local" id="datetime-input">
-                            <button onclick="dateToTimestamp()" class="btn-small">转换</button>
-                        </div>
-                        <div class="time-result">
-                            <div>当前时间戳: <span id="current-timestamp"></span></div>
-                            <div>转换结果: <span id="time-result"></span></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第四行：实用工具 -->
-                <div class="tool-card" id="unit-converter">
-                    <div class="tool-header">
-                        <h3>📏 单位转换</h3>
-                    </div>
-                    <div class="tool-content">
-                        <div class="converter-group">
-                            <select id="unit-type">
-                                <option value="length">长度</option>
-                                <option value="weight">重量</option>
-                                <option value="temperature">温度</option>
-                                <option value="area">面积</option>
-                            </select>
-                        </div>
-                        <div class="conversion-inputs">
-                            <input type="number" id="convert-input" placeholder="输入数值">
-                            <select id="from-unit"></select>
-                            <span>→</span>
-                            <select id="to-unit"></select>
-                        </div>
-                        <button onclick="convertUnit()" class="btn-primary">转换</button>
-                        <div class="conversion-result">
-                            <input type="text" id="convert-result" readonly>
+                        <div class="panel-content">
+                            <div class="input-group">
+                                <label>输入内容</label>
+                                <textarea id="hash-input" placeholder="输入要生成Hash的内容..."></textarea>
+                            </div>
+                            <div class="button-group">
+                                <button class="btn-primary" onclick="generateSHA256()">SHA256</button>
+                                <button class="btn-secondary" onclick="generateSHA1()">SHA1</button>
+                                <button class="btn-outline" onclick="generateMD5()">MD5</button>
+                            </div>
+                            <div class="input-group">
+                                <label>Hash结果</label>
+                                <input type="text" id="hash-output" placeholder="Hash值将显示在这里..." readonly>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="tool-card" id="regex-tester">
-                    <div class="tool-header">
-                        <h3>🔍 正则表达式测试</h3>
+                <!-- 文本处理类 -->
+                <div id="text" class="tool-category">
+                    <div class="tool-buttons">
+                        <button class="tool-btn" onclick="showTool('textprocess')">文本转换</button>
+                        <button class="tool-btn" onclick="showTool('textstat')">文本统计</button>
+                        <button class="tool-btn" onclick="showTool('password')">密码生成</button>
                     </div>
-                    <div class="tool-content">
-                        <input type="text" id="regex-pattern" placeholder="输入正则表达式...">
-                        <textarea id="regex-text" placeholder="输入测试文本..." rows="2"></textarea>
-                        <div class="tool-controls">
-                            <button onclick="testRegex()" class="btn-primary">测试</button>
-                            <label><input type="checkbox" id="regex-global"> 全局</label>
-                            <label><input type="checkbox" id="regex-ignore-case"> 忽略大小写</label>
+
+                    <!-- 文本处理工具 -->
+                    <div id="textprocess" class="tool-panel">
+                        <div class="panel-header">
+                            <h3>📝 文本转换处理</h3>
+                            <p>大小写转换、反转、去空格等文本操作</p>
                         </div>
-                        <div id="regex-result" class="regex-result"></div>
+                        <div class="panel-content">
+                            <div class="input-group">
+                                <label>输入文本</label>
+                                <textarea id="text-input" placeholder="输入要处理的文本..."></textarea>
+                            </div>
+                            <div class="button-group">
+                                <button class="btn-primary" onclick="textToUpper()">转大写</button>
+                                <button class="btn-primary" onclick="textToLower()">转小写</button>
+                                <button class="btn-secondary" onclick="textReverse()">反转</button>
+                                <button class="btn-secondary" onclick="removeSpaces()">去空格</button>
+                            </div>
+                            <div class="input-group">
+                                <label>处理结果</label>
+                                <textarea id="text-output" placeholder="处理结果..." readonly></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 文本统计工具 -->
+                    <div id="textstat" class="tool-panel" style="display: none;">
+                        <div class="panel-header">
+                            <h3>📊 文本统计分析</h3>
+                            <p>统计字符数、词数、行数等信息</p>
+                        </div>
+                        <div class="panel-content">
+                            <div class="input-group">
+                                <label>输入文本</label>
+                                <textarea id="stat-input" placeholder="输入要统计的文本..." oninput="getTextStatsLive()"></textarea>
+                            </div>
+                            <div class="stats-display" id="stats-display">
+                                <div class="stat-item">
+                                    <span class="stat-label">字符数</span>
+                                    <span class="stat-value" id="char-count">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">字符数(无空格)</span>
+                                    <span class="stat-value" id="char-no-space">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">词数</span>
+                                    <span class="stat-value" id="word-count">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">行数</span>
+                                    <span class="stat-value" id="line-count">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 密码生成工具 -->
+                    <div id="password" class="tool-panel" style="display: none;">
+                        <div class="panel-header">
+                            <h3>🔑 安全密码生成器</h3>
+                            <p>生成高强度随机密码</p>
+                        </div>
+                        <div class="panel-content">
+                            <div class="password-config">
+                                <div class="config-row">
+                                    <label>密码长度: <span id="length-display">12</span></label>
+                                    <input type="range" id="password-length" min="6" max="32" value="12" 
+                                           oninput="document.getElementById('length-display').textContent = this.value">
+                                </div>
+                                <div class="config-row">
+                                    <div class="checkbox-grid">
+                                        <label><input type="checkbox" id="include-uppercase" checked> 大写字母</label>
+                                        <label><input type="checkbox" id="include-lowercase" checked> 小写字母</label>
+                                        <label><input type="checkbox" id="include-numbers" checked> 数字</label>
+                                        <label><input type="checkbox" id="include-symbols"> 特殊字符</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="button-group">
+                                <button class="btn-primary" onclick="generatePassword()">生成密码</button>
+                            </div>
+                            <div class="password-result">
+                                <div class="result-row">
+                                    <input type="text" id="generated-password" placeholder="生成的密码将显示在这里..." readonly>
+                                    <button class="btn-copy" onclick="copyPassword()">复制</button>
+                                </div>
+                                <div class="strength-bar" id="strength-bar"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="tool-card" id="calculator">
-                    <div class="tool-header">
-                        <h3>🧮 高级计算器</h3>
+                <!-- 格式转换类 -->
+                <div id="convert" class="tool-category">
+                    <div class="tool-buttons">
+                        <button class="tool-btn" onclick="showTool('json')">JSON格式化</button>
+                        <button class="tool-btn" onclick="showTool('timestamp')">时间转换</button>
+                        <button class="tool-btn" onclick="showTool('color')">颜色转换</button>
                     </div>
-                    <div class="tool-content">
-                        <input type="text" id="calc-display" readonly>
-                        <div class="calculator-buttons">
-                            <button onclick="calcClear()" class="btn-calc operator">C</button>
-                            <button onclick="calcBackspace()" class="btn-calc operator">⌫</button>
-                            <button onclick="calcInput('/')" class="btn-calc operator">÷</button>
-                            <button onclick="calcInput('*')" class="btn-calc operator">×</button>
-                            
-                            <button onclick="calcInput('7')" class="btn-calc">7</button>
-                            <button onclick="calcInput('8')" class="btn-calc">8</button>
-                            <button onclick="calcInput('9')" class="btn-calc">9</button>
-                            <button onclick="calcInput('-')" class="btn-calc operator">-</button>
-                            
-                            <button onclick="calcInput('4')" class="btn-calc">4</button>
-                            <button onclick="calcInput('5')" class="btn-calc">5</button>
-                            <button onclick="calcInput('6')" class="btn-calc">6</button>
-                            <button onclick="calcInput('+')" class="btn-calc operator">+</button>
-                            
-                            <button onclick="calcInput('1')" class="btn-calc">1</button>
-                            <button onclick="calcInput('2')" class="btn-calc">2</button>
-                            <button onclick="calcInput('3')" class="btn-calc">3</button>
-                            <button onclick="calcEquals()" class="btn-calc equals" rowspan="2">=</button>
-                            
-                            <button onclick="calcInput('0')" class="btn-calc zero">0</button>
-                            <button onclick="calcInput('.')" class="btn-calc">.</button>
+
+                    <!-- JSON工具 -->
+                    <div id="json" class="tool-panel">
+                        <div class="panel-header">
+                            <h3>📄 JSON 格式化工具</h3>
+                            <p>格式化、压缩、验证JSON数据</p>
+                        </div>
+                        <div class="panel-content">
+                            <div class="input-group">
+                                <label>JSON输入</label>
+                                <textarea id="json-input" placeholder='输入JSON数据，例如：{"name":"张三","age":25}'></textarea>
+                            </div>
+                            <div class="button-group">
+                                <button class="btn-primary" onclick="formatJSON()">格式化</button>
+                                <button class="btn-secondary" onclick="minifyJSON()">压缩</button>
+                                <button class="btn-outline" onclick="validateJSON()">验证</button>
+                            </div>
+                            <div class="input-group">
+                                <label>格式化结果</label>
+                                <textarea id="json-output" placeholder="格式化结果..." readonly></textarea>
+                            </div>
+                            <div id="json-error" class="error-message"></div>
+                        </div>
+                    </div>
+
+                    <!-- 时间戳工具 -->
+                    <div id="timestamp" class="tool-panel" style="display: none;">
+                        <div class="panel-header">
+                            <h3>⏰ 时间戳转换工具</h3>
+                            <p>时间戳与日期时间互相转换</p>
+                        </div>
+                        <div class="panel-content">
+                            <div class="current-time">
+                                <span>当前时间戳：<strong id="current-timestamp"></strong></span>
+                            </div>
+                            <div class="convert-section">
+                                <div class="convert-row">
+                                    <label>时间戳</label>
+                                    <div class="convert-input">
+                                        <input type="text" id="timestamp-input" placeholder="输入时间戳...">
+                                        <button class="btn-convert" onclick="timestampToDate()">转换</button>
+                                    </div>
+                                </div>
+                                <div class="convert-row">
+                                    <label>日期时间</label>
+                                    <div class="convert-input">
+                                        <input type="datetime-local" id="datetime-input">
+                                        <button class="btn-convert" onclick="dateToTimestamp()">转换</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="result-display">
+                                <label>转换结果</label>
+                                <div class="result-box" id="time-result">等待转换...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 颜色工具 -->
+                    <div id="color" class="tool-panel" style="display: none;">
+                        <div class="panel-header">
+                            <h3>🎨 颜色格式转换</h3>
+                            <p>HEX、RGB、HSL颜色格式互转</p>
+                        </div>
+                        <div class="panel-content">
+                            <div class="color-picker-section">
+                                <div class="color-display">
+                                    <input type="color" id="color-picker-input" value="#3B82F6">
+                                    <div class="color-preview" id="color-preview"></div>
+                                </div>
+                            </div>
+                            <div class="color-values">
+                                <div class="color-row">
+                                    <label>HEX</label>
+                                    <div class="color-input">
+                                        <input type="text" id="hex-value" readonly>
+                                        <button class="btn-copy" onclick="copyColorValue('hex')">复制</button>
+                                    </div>
+                                </div>
+                                <div class="color-row">
+                                    <label>RGB</label>
+                                    <div class="color-input">
+                                        <input type="text" id="rgb-value" readonly>
+                                        <button class="btn-copy" onclick="copyColorValue('rgb')">复制</button>
+                                    </div>
+                                </div>
+                                <div class="color-row">
+                                    <label>HSL</label>
+                                    <div class="color-input">
+                                        <input type="text" id="hsl-value" readonly>
+                                        <button class="btn-copy" onclick="copyColorValue('hsl')">复制</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 计算工具类 -->
+                <div id="calc" class="tool-category">
+                    <div class="tool-buttons">
+                        <button class="tool-btn" onclick="showTool('calculator')">计算器</button>
+                        <button class="tool-btn" onclick="showTool('unit')">单位转换</button>
+                    </div>
+
+                    <!-- 计算器工具 -->
+                    <div id="calculator" class="tool-panel">
+                        <div class="panel-header">
+                            <h3>🧮 高级计算器</h3>
+                            <p>支持基本数学运算</p>
+                        </div>
+                        <div class="panel-content">
+                            <div class="calculator">
+                                <input type="text" id="calc-display" class="calc-display" readonly>
+                                <div class="calc-buttons">
+                                    <button onclick="calcClear()" class="calc-btn operator">C</button>
+                                    <button onclick="calcBackspace()" class="calc-btn operator">⌫</button>
+                                    <button onclick="calcInput('/')" class="calc-btn operator">÷</button>
+                                    <button onclick="calcInput('*')" class="calc-btn operator">×</button>
+                                    
+                                    <button onclick="calcInput('7')" class="calc-btn">7</button>
+                                    <button onclick="calcInput('8')" class="calc-btn">8</button>
+                                    <button onclick="calcInput('9')" class="calc-btn">9</button>
+                                    <button onclick="calcInput('-')" class="calc-btn operator">-</button>
+                                    
+                                    <button onclick="calcInput('4')" class="calc-btn">4</button>
+                                    <button onclick="calcInput('5')" class="calc-btn">5</button>
+                                    <button onclick="calcInput('6')" class="calc-btn">6</button>
+                                    <button onclick="calcInput('+')" class="calc-btn operator">+</button>
+                                    
+                                    <button onclick="calcInput('1')" class="calc-btn">1</button>
+                                    <button onclick="calcInput('2')" class="calc-btn">2</button>
+                                    <button onclick="calcInput('3')" class="calc-btn">3</button>
+                                    <button onclick="calcEquals()" class="calc-btn equals" rowspan="2">=</button>
+                                    
+                                    <button onclick="calcInput('0')" class="calc-btn zero">0</button>
+                                    <button onclick="calcInput('.')" class="calc-btn">.</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 单位转换工具 -->
+                    <div id="unit" class="tool-panel" style="display: none;">
+                        <div class="panel-header">
+                            <h3>📏 单位转换工具</h3>
+                            <p>长度、重量、温度等单位转换</p>
+                        </div>
+                        <div class="panel-content">
+                            <div class="unit-selector">
+                                <label>转换类型</label>
+                                <select id="unit-type" onchange="updateUnitOptions()">
+                                    <option value="length">长度</option>
+                                    <option value="weight">重量</option>
+                                    <option value="temperature">温度</option>
+                                </select>
+                            </div>
+                            <div class="conversion-area">
+                                <div class="conversion-row">
+                                    <input type="number" id="convert-input" placeholder="输入数值">
+                                    <select id="from-unit"></select>
+                                </div>
+                                <div class="conversion-arrow">↓</div>
+                                <div class="conversion-row">
+                                    <input type="text" id="convert-result" readonly>
+                                    <select id="to-unit"></select>
+                                </div>
+                            </div>
+                            <div class="button-group">
+                                <button class="btn-primary" onclick="convertUnit()">转换</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 开发工具类 -->
+                <div id="dev" class="tool-category">
+                    <div class="tool-buttons">
+                        <button class="tool-btn" onclick="showTool('regex')">正则测试</button>
+                    </div>
+
+                    <!-- 正则表达式工具 -->
+                    <div id="regex" class="tool-panel">
+                        <div class="panel-header">
+                            <h3>🔍 正则表达式测试器</h3>
+                            <p>测试和验证正则表达式</p>
+                        </div>
+                        <div class="panel-content">
+                            <div class="input-group">
+                                <label>正则表达式</label>
+                                <input type="text" id="regex-pattern" placeholder="输入正则表达式...">
+                            </div>
+                            <div class="regex-options">
+                                <label><input type="checkbox" id="regex-global"> 全局匹配 (g)</label>
+                                <label><input type="checkbox" id="regex-ignore-case"> 忽略大小写 (i)</label>
+                            </div>
+                            <div class="input-group">
+                                <label>测试文本</label>
+                                <textarea id="regex-text" placeholder="输入要测试的文本..."></textarea>
+                            </div>
+                            <div class="button-group">
+                                <button class="btn-primary" onclick="testRegex()">测试匹配</button>
+                            </div>
+                            <div class="regex-result" id="regex-result"></div>
                         </div>
                     </div>
                 </div>
 
             </div>
 
-            <!-- 广告位 -->
+            <!-- 广告区域 -->
             <div class="ad-section">
                 <div id="ad-container-tools-1" class="ad-banner"></div>
             </div>
@@ -343,7 +485,6 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     <script src="assets/js/security.js"></script>
     <script src="assets/js/ad-manager.js"></script>
     <script src="assets/js/main.js"></script>
