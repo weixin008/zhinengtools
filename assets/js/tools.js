@@ -1,66 +1,35 @@
 // 工具功能JavaScript文件
 
-// 工具显示功能
-function showTool(toolId) {
-    // 显示工具工作区
-    const workspace = document.getElementById('tool-workspace');
-    workspace.style.display = 'block';
-    
-    // 隐藏所有工具面板
-    const panels = document.querySelectorAll('.tool-panel');
-    panels.forEach(panel => {
-        panel.classList.remove('active');
-    });
-    
-    // 显示选中的工具面板
+// 工具展开/折叠功能
+function toggleTool(toolId) {
     const targetPanel = document.getElementById(toolId);
-    if (targetPanel) {
+    const toolCard = document.querySelector(`[onclick="toggleTool('${toolId}')"]`);
+    
+    if (!targetPanel || !toolCard) return;
+    
+    const isCurrentlyActive = targetPanel.classList.contains('active');
+    
+    // 首先关闭所有其他工具
+    const allPanels = document.querySelectorAll('.tool-panel');
+    const allCards = document.querySelectorAll('.tool-card');
+    
+    allPanels.forEach(panel => panel.classList.remove('active'));
+    allCards.forEach(card => card.classList.remove('active'));
+    
+    // 如果当前工具没有激活，则激活它
+    if (!isCurrentlyActive) {
         targetPanel.classList.add('active');
+        toolCard.classList.add('active');
+        
+        // 平滑滚动到工具面板
+        setTimeout(() => {
+            targetPanel.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start',
+                inline: 'nearest'
+            });
+        }, 100);
     }
-    
-    // 更新工具卡片状态
-    const toolCards = document.querySelectorAll('.tool-card');
-    toolCards.forEach(card => card.classList.remove('active'));
-    
-    const activeCard = document.querySelector(`[onclick="showTool('${toolId}')"]`);
-    if (activeCard) {
-        activeCard.classList.add('active');
-    }
-    
-    // 更新标题
-    const titles = {
-        'base64': 'Base64编解码',
-        'url': 'URL编解码',
-        'hash': 'Hash生成器',
-        'text': '文本处理',
-        'password': '密码生成器',
-        'markdown': 'Markdown转换',
-        'json': 'JSON格式化',
-        'timestamp': '时间戳转换',
-        'color': '颜色转换',
-        'calculator': '高级计算器',
-        'unit': '单位转换',
-        'regex': '正则测试',
-        'uuid': 'UUID生成器',
-        'lottery': '随机数生成'
-    };
-    
-    const titleElement = document.getElementById('current-tool-title');
-    if (titleElement && titles[toolId]) {
-        titleElement.textContent = titles[toolId];
-    }
-    
-    // 滚动到工具区域
-    workspace.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function closeTool() {
-    const workspace = document.getElementById('tool-workspace');
-    workspace.style.display = 'none';
-    
-    // 清除工具卡片状态
-    const toolCards = document.querySelectorAll('.tool-card');
-    toolCards.forEach(card => card.classList.remove('active'));
 }
 
 // 备用的简单QR码图案生成
