@@ -11,40 +11,66 @@ function generateQR() {
     }
     
     const canvas = document.getElementById('qr-canvas');
+    const resultDiv = document.getElementById('qr-result');
     
     // 检查是否有QRCode库
     if (typeof QRCode === 'undefined') {
-        // 备用方案：简单图案生成
-        generateSimpleQR(text, size, canvas);
+        console.warn('QRCode库未加载，使用备用方案');
+        showNotification('QRCode库加载中，请稍后重试', 'warning');
         return;
     }
     
-    // 使用真正的QRCode库
-    QRCode.toCanvas(canvas, text, {
-        width: size,
-        height: size,
-        color: {
-            dark: '#000000',
-            light: '#FFFFFF'
-        },
-        errorCorrectionLevel: 'M',
-        margin: 2
-    }, function (error) {
-        if (error) {
-            console.error('QR码生成失败:', error);
-            showNotification('二维码生成失败，请重试', 'error');
-            return;
-        }
+    try {
+        // 清除之前的内容
+        canvas.width = size;
+        canvas.height = size;
         
-        document.getElementById('qr-result').style.display = 'block';
-        showNotification('二维码生成成功！', 'success');
-        
-        // 统计使用
-        trackUserBehavior('qr_generated', {
-            textLength: text.length,
-            size: size
+        // 使用真正的QRCode库
+        QRCode.toCanvas(canvas, text, {
+            width: size,
+            height: size,
+            color: {
+                dark: '#000000',
+                light: '#FFFFFF'
+            },
+            errorCorrectionLevel: 'M',
+            margin: 2,
+            scale: 4
+        }, function (error) {
+            if (error) {
+                console.error('QR码生成失败:', error);
+                showNotification('二维码生成失败：' + error.message, 'error');
+                return;
+            }
+            
+            // 显示结果区域
+            resultDiv.style.display = 'block';
+            
+            // 添加下载功能
+            const downloadBtn = document.getElementById('qr-download');
+            if (downloadBtn) {
+                downloadBtn.onclick = function() {
+                    const link = document.createElement('a');
+                    link.download = 'qrcode.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+                };
+            }
+            
+            showNotification('二维码生成成功！内容：' + text.substring(0, 20) + (text.length > 20 ? '...' : ''), 'success');
+            
+            // 统计使用
+            if (typeof trackUserBehavior === 'function') {
+                trackUserBehavior('qr_generated', {
+                    textLength: text.length,
+                    size: size
+                });
+            }
         });
-    });
+    } catch (error) {
+        console.error('QR码生成异常:', error);
+        showNotification('二维码生成异常：' + error.message, 'error');
+    }
 }
 
 // 备用的简单QR码图案生成
@@ -466,30 +492,356 @@ function calculate() {
     }
 }
 
+// 新增工具功能
+// URL编解码功能
+function encodeURL() {
+    const input = document.getElementById('url-input').value.trim();
+    if (!input) {
+        showNotification('请输入需要编码的URL', 'warning');
+        return;
+    }
+    
+    try {
+        const encoded = encodeURIComponent(input);
+        document.getElementById('url-output').value = encoded;
+        showNotification('URL编码成功！', 'success');
+    } catch (error) {
+        showNotification('URL编码失败：' + error.message, 'error');
+    }
+}
+
+function decodeURL() {
+    const input = document.getElementById('url-input').value.trim();
+    if (!input) {
+        showNotification('请输入需要解码的URL', 'warning');
+        return;
+    }
+    
+    try {
+        const decoded = decodeURIComponent(input);
+        document.getElementById('url-output').value = decoded;
+        showNotification('URL解码成功！', 'success');
+    } catch (error) {
+        showNotification('URL解码失败：' + error.message, 'error');
+    }
+}
+
+// Hash生成功能
+async function generateMD5() {
+    await generateHash('SHA-256', 'MD5');
+}
+
+async function generateSHA1() {
+    await generateHash('SHA-1', 'SHA1');
+}
+
+async function generateSHA256() {
+    await generateHash('SHA-256', 'SHA256');
+}
+
+async function generateHash(algorithm, displayName) {
+    const input = document.getElementById('hash-input').value.trim();
+    if (!input) {
+        showNotification(`请输入要生成${displayName}的内容`, 'warning');
+        return;
+    }
+    
+    try {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(input);
+        const hashBuffer = await crypto.subtle.digest(algorithm, data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        
+        document.getElementById('hash-output').value = hashHex;
+        showNotification(`${displayName}生成成功！`, 'success');
+    } catch (error) {
+        showNotification(`${displayName}生成失败：` + error.message, 'error');
+    }
+}
+
+// 文本处理功能
+function textToUpper() {
+    const input = document.getElementById('text-input').value;
+    document.getElementById('text-output').value = input.toUpperCase();
+    showNotification('已转换为大写', 'success');
+}
+
+function textToLower() {
+    const input = document.getElementById('text-input').value;
+    document.getElementById('text-output').value = input.toLowerCase();
+    showNotification('已转换为小写', 'success');
+}
+
+function textReverse() {
+    const input = document.getElementById('text-input').value;
+    document.getElementById('text-output').value = input.split('').reverse().join('');
+    showNotification('文本已反转', 'success');
+}
+
+function removeSpaces() {
+    const input = document.getElementById('text-input').value;
+    document.getElementById('text-output').value = input.replace(/\s/g, '');
+    showNotification('已移除所有空格', 'success');
+}
+
+function getTextStats() {
+    const input = document.getElementById('text-input').value;
+    const stats = {
+        chars: input.length,
+        charsNoSpaces: input.replace(/\s/g, '').length,
+        words: input.trim() ? input.trim().split(/\s+/).length : 0,
+        lines: input.split('\n').length,
+        paragraphs: input.split(/\n\s*\n/).filter(p => p.trim()).length
+    };
+    
+    const statsHtml = `
+        字符数: ${stats.chars} | 字符数(无空格): ${stats.charsNoSpaces} | 
+        词数: ${stats.words} | 行数: ${stats.lines} | 段落数: ${stats.paragraphs}
+    `;
+    
+    document.getElementById('text-stats').innerHTML = statsHtml;
+    showNotification('文本统计完成', 'success');
+}
+
+// 颜色选择器功能
+function initColorPicker() {
+    const colorInput = document.getElementById('color-picker-input');
+    if (colorInput) {
+        colorInput.addEventListener('input', updateColorValues);
+        updateColorValues(); // 初始化显示
+    }
+}
+
+function updateColorValues() {
+    const color = document.getElementById('color-picker-input').value;
+    const preview = document.getElementById('color-preview');
+    
+    // 更新预览
+    if (preview) {
+        preview.style.backgroundColor = color;
+    }
+    
+    // 转换颜色格式
+    const hex = color.toUpperCase();
+    const rgb = hexToRgb(color);
+    const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+    
+    // 更新显示
+    document.getElementById('hex-value').value = hex;
+    document.getElementById('rgb-value').value = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+    document.getElementById('hsl-value').value = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+}
+
+function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
+function rgbToHsl(r, g, b) {
+    r /= 255;
+    g /= 255;
+    b /= 255;
+    
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+    
+    if (max === min) {
+        h = s = 0;
+    } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        
+        switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+    
+    return {
+        h: Math.round(h * 360),
+        s: Math.round(s * 100),
+        l: Math.round(l * 100)
+    };
+}
+
+function copyColorValue(type) {
+    let value;
+    switch (type) {
+        case 'hex':
+            value = document.getElementById('hex-value').value;
+            break;
+        case 'rgb':
+            value = document.getElementById('rgb-value').value;
+            break;
+        case 'hsl':
+            value = document.getElementById('hsl-value').value;
+            break;
+    }
+    
+    navigator.clipboard.writeText(value).then(() => {
+        showNotification(`${type.toUpperCase()}值已复制到剪贴板`, 'success');
+    }).catch(() => {
+        showNotification('复制失败', 'error');
+    });
+}
+
+// 时间戳转换功能
+function timestampToDate() {
+    const timestamp = document.getElementById('timestamp-input').value.trim();
+    if (!timestamp) {
+        showNotification('请输入时间戳', 'warning');
+        return;
+    }
+    
+    try {
+        const num = parseInt(timestamp);
+        // 判断是否为毫秒时间戳
+        const date = new Date(num > 9999999999 ? num : num * 1000);
+        
+        if (isNaN(date.getTime())) {
+            throw new Error('无效的时间戳');
+        }
+        
+        document.getElementById('time-result').textContent = date.toLocaleString();
+        showNotification('时间戳转换成功', 'success');
+    } catch (error) {
+        showNotification('时间戳转换失败：' + error.message, 'error');
+    }
+}
+
+function dateToTimestamp() {
+    const datetime = document.getElementById('datetime-input').value;
+    if (!datetime) {
+        showNotification('请选择日期时间', 'warning');
+        return;
+    }
+    
+    try {
+        const date = new Date(datetime);
+        const timestamp = Math.floor(date.getTime() / 1000);
+        
+        document.getElementById('time-result').textContent = timestamp;
+        showNotification('日期转换成功', 'success');
+    } catch (error) {
+        showNotification('日期转换失败：' + error.message, 'error');
+    }
+}
+
+function updateCurrentTimestamp() {
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    const element = document.getElementById('current-timestamp');
+    if (element) {
+        element.textContent = currentTimestamp;
+    }
+}
+
+// 新版计算器功能
+let calcExpression = '';
+
+function calcInput(value) {
+    calcExpression += value;
+    document.getElementById('calc-display').value = calcExpression;
+}
+
+function calcClear() {
+    calcExpression = '';
+    document.getElementById('calc-display').value = '';
+}
+
+function calcBackspace() {
+    calcExpression = calcExpression.slice(0, -1);
+    document.getElementById('calc-display').value = calcExpression;
+}
+
+function calcEquals() {
+    try {
+        // 安全计算
+        const sanitized = calcExpression.replace(/[^0-9+\-*/.() ]/g, '').replace(/×/g, '*').replace(/÷/g, '/');
+        const result = Function('"use strict"; return (' + sanitized + ')')();
+        
+        document.getElementById('calc-display').value = result;
+        calcExpression = result.toString();
+        showNotification('计算完成', 'success');
+    } catch (error) {
+        showNotification('计算错误', 'error');
+        calcClear();
+    }
+}
+
+// 正则表达式测试功能
+function testRegex() {
+    const pattern = document.getElementById('regex-pattern').value.trim();
+    const text = document.getElementById('regex-text').value;
+    const resultDiv = document.getElementById('regex-result');
+    
+    if (!pattern) {
+        showNotification('请输入正则表达式', 'warning');
+        return;
+    }
+    
+    try {
+        const flags = [];
+        if (document.getElementById('regex-global').checked) flags.push('g');
+        if (document.getElementById('regex-ignore-case').checked) flags.push('i');
+        
+        const regex = new RegExp(pattern, flags.join(''));
+        const matches = text.match(regex);
+        
+        if (matches) {
+            resultDiv.innerHTML = `
+                <strong>匹配成功！</strong><br>
+                匹配结果: ${matches.length} 个<br>
+                <div style="margin-top: 0.5rem;">
+                    ${matches.map((match, index) => `<span style="background: #fef3c7; padding: 2px 4px; margin: 2px; border-radius: 3px;">${match}</span>`).join('')}
+                </div>
+            `;
+            showNotification('正则匹配成功', 'success');
+        } else {
+            resultDiv.innerHTML = '<strong>无匹配结果</strong>';
+            showNotification('无匹配结果', 'warning');
+        }
+    } catch (error) {
+        resultDiv.innerHTML = `<strong>正则表达式错误:</strong> ${error.message}`;
+        showNotification('正则表达式错误', 'error');
+    }
+}
+
 // 页面加载完成后的初始化
 document.addEventListener('DOMContentLoaded', function() {
-    // 初始化计算器显示
-    document.getElementById('calc-display').value = '0';
+    // 初始化颜色选择器
+    initColorPicker();
+    
+    // 更新时间戳显示
+    updateCurrentTimestamp();
+    setInterval(updateCurrentTimestamp, 1000);
     
     // 为计算器添加键盘支持
     document.addEventListener('keydown', function(event) {
         const key = event.key;
         const display = document.getElementById('calc-display');
         
-        if (!display) return;
+        if (!display || document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
         
         if ('0123456789'.includes(key)) {
-            appendToDisplay(key);
+            calcInput(key);
         } else if ('+-*/'.includes(key)) {
-            appendToDisplay(key === '*' ? '×' : key === '/' ? '÷' : key);
+            calcInput(key === '*' ? '×' : key === '/' ? '÷' : key);
         } else if (key === 'Enter' || key === '=') {
-            calculate();
+            calcEquals();
         } else if (key === 'Escape' || key === 'c' || key === 'C') {
-            clearCalculator();
+            calcClear();
         } else if (key === 'Backspace') {
-            deleteLast();
+            calcBackspace();
         } else if (key === '.') {
-            appendToDisplay('.');
+            calcInput('.');
         }
     });
 }); 
