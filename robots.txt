@@ -1,0 +1,27 @@
+User-agent: *
+Allow: /
+
+# 允许抓取所有内容
+Allow: /index.html
+Allow: /tools.html
+Allow: /player.html
+Allow: /articles.html
+Allow: /about.html
+
+# 允许抓取资源文件
+Allow: /assets/
+Allow: /assets/css/
+Allow: /assets/js/
+Allow: /assets/images/
+
+# 不允许抓取的内容
+Disallow: /temp/
+Disallow: /cache/
+Disallow: /.git/
+Disallow: /node_modules/
+
+# 站点地图
+Sitemap: https://zhineng-tech.ip-ddns.com/sitemap.xml
+
+# 爬虫访问延迟
+Crawl-delay: 1 

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M3U8视频播放器 - 智能在线播放工具</title>
+    <meta name="description" content="智能免费的M3U8视频播放器，支持直播流和点播视频，兼容各种格式，操作简单，播放流畅。">
+    <meta name="keywords" content="智能,M3U8播放器,视频播放器,直播播放器,在线播放器,HLS播放器">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="canonical" href="https://zhineng-tech.ip-ddns.com/player.html">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="assets/images/logo.png" alt="聚合工具平台" class="logo">
+                <h1>聚合工具平台</h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="player.html" class="nav-link active">视频播放器</a>
+                <a href="tools.html" class="nav-link">在线工具</a>
+                <a href="articles.html" class="nav-link">技术文章</a>
+                <a href="about.html" class="nav-link">关于我们</a>
+            </nav>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- 页面标题 -->
+        <section class="hero">
+            <div class="container">
+                <h2>M3U8视频播放器</h2>
+                <p>支持直播流和点播视频，兼容多种格式</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- 播放器区域 -->
+            <div class="player-container">
+                <h3>🎥 视频播放器</h3>
+                
+                <!-- URL输入区域 -->
+                <div class="form-group">
+                    <label for="video-url">视频链接 (支持M3U8、MP4、WebM等格式)：</label>
+                    <input type="url" id="video-url" class="form-control" 
+                           placeholder="输入视频链接，例如：https://example.com/video.m3u8">
+                </div>
+                
+                <div class="player-controls">
+                    <button onclick="loadVideo()" class="btn-tool">加载视频</button>
+                    <button onclick="clearPlayer()" class="btn-tool" style="background-color: #6b7280;">清空</button>
+                    <button onclick="toggleFullscreen()" class="btn-tool">全屏</button>
+                </div>
+
+                <!-- 视频播放器 -->
+                <div class="video-player" id="video-container">
+                    <video id="video-player" controls style="width: 100%; height: 450px; background: #000;">
+                        您的浏览器不支持视频播放
+                    </video>
+                </div>
+
+                <!-- 播放器信息 -->
+                <div id="player-info" class="result-container" style="display: none;">
+                    <h4>播放器信息</h4>
+                    <div id="video-info"></div>
+                </div>
+
+                <!-- 常用直播源 -->
+                <div class="tool-container" style="margin-top: 2rem;">
+                    <h4>📺 常用测试源</h4>
+                    <p style="color: #6b7280; font-size: 0.875rem;">以下为测试链接，实际使用请替换为您的视频源</p>
+                    <div class="quick-sources">
+                        <button onclick="loadQuickSource('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')" class="btn-tool">测试M3U8-1</button>
+                        <button onclick="loadQuickSource('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4')" class="btn-tool">测试MP4-1</button>
+                        <button onclick="loadQuickSource('https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4')" class="btn-tool">测试MP4-2</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 广告位 -->
+            <div class="ad-section">
+                <div id="ad-container-player-1" class="ad-banner"></div>
+            </div>
+
+            <!-- 使用说明 -->
+            <div class="tool-container">
+                <h3>📖 使用说明</h3>
+                <div class="usage-guide">
+                    <h4>支持的格式：</h4>
+                    <ul>
+                        <li><strong>M3U8 (HLS)</strong> - HTTP Live Streaming，支持直播和点播</li>
+                        <li><strong>MP4</strong> - 标准视频格式，兼容性最好</li>
+                        <li><strong>WebM</strong> - 开源视频格式，Web优化</li>
+                        <li><strong>OGG</strong> - 开源多媒体格式</li>
+                    </ul>
+
+                    <h4>使用方法：</h4>
+                    <ol>
+                        <li>在输入框中粘贴视频链接</li>
+                        <li>点击"加载视频"按钮</li>
+                        <li>等待视频加载完成后开始播放</li>
+                        <li>使用播放器控件控制播放</li>
+                    </ol>
+
+                    <h4>功能特色：</h4>
+                    <ul>
+                        <li>✅ 支持多种视频格式</li>
+                        <li>✅ 自适应播放质量</li>
+                        <li>✅ 全屏播放支持</li>
+                        <li>✅ 播放进度控制</li>
+                        <li>✅ 音量调节</li>
+                        <li>✅ 移动端适配</li>
+                    </ul>
+
+                    <h4>注意事项：</h4>
+                    <ul>
+                        <li>⚠️ 确保视频链接可以直接访问</li>
+                        <li>⚠️ 某些网站可能有防盗链保护</li>
+                        <li>⚠️ HTTPS页面无法播放HTTP视频源</li>
+                        <li>⚠️ 部分浏览器可能不支持某些格式</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 播放历史 -->
+            <div class="tool-container">
+                <h3>📝 播放历史</h3>
+                <div id="play-history">
+                    <p style="color: #6b7280;">暂无播放记录</p>
+                </div>
+                <button onclick="clearHistory()" class="btn-tool" style="background-color: #6b7280;">清空历史</button>
+            </div>
+
+            <!-- 广告位 -->
+            <div class="ad-section">
+                <div id="ad-container-player-2" class="ad-sidebar"></div>
+            </div>
+
+            <!-- 技术支持信息 -->
+            <div class="tool-container">
+                <h3>🔧 技术支持</h3>
+                <div class="tech-info">
+                    <h4>支持的协议：</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                        <div class="protocol-card">
+                            <h5>HLS (HTTP Live Streaming)</h5>
+                            <p>Apple开发的流媒体协议，.m3u8格式</p>
+                        </div>
+                        <div class="protocol-card">
+                            <h5>Progressive Download</h5>
+                            <p>渐进式下载，支持MP4、WebM等格式</p>
+                        </div>
+                        <div class="protocol-card">
+                            <h5>DASH (Dynamic Adaptive Streaming)</h5>
+                            <p>自适应流媒体协议，高质量播放</p>
+                        </div>
+                    </div>
+
+                    <h4>浏览器兼容性：</h4>
+                    <ul>
+                        <li>✅ Chrome 50+</li>
+                        <li>✅ Firefox 48+</li>
+                        <li>✅ Safari 10+</li>
+                        <li>✅ Edge 15+</li>
+                        <li>⚠️ IE 11 (部分支持)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>聚合工具平台</h4>
+                    <p>提供优质的在线工具服务</p>
+                </div>
+                <div class="footer-section">
+                    <h4>播放器功能</h4>
+                    <ul>
+                        <li>M3U8播放</li>
+                        <li>多格式支持</li>
+                        <li>全屏播放</li>
+                        <li>移动端适配</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>联系我们</h4>
+                    <p>邮箱：contact@example.com</p>
+                    <p>QQ群：123456789</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 聚合工具平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/player.js"></script>
+    <script>
+        // 加载播放器页面广告
+        loadAd("player");
+        
+        // 移动端菜单切换
+        function toggleMobileMenu() {
+            const nav = document.querySelector('.nav');
+            nav.classList.toggle('active');
+        }
+
+        // 初始化播放器
+        initPlayer();
+        
+        // 加载播放历史
+        loadPlayHistory();
+    </script>
+
+    <style>
+        .protocol-card {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+        
+        .protocol-card h5 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .protocol-card p {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+        
+        .usage-guide ul, .usage-guide ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .usage-guide li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .quick-sources {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .tech-info h4 {
+            color: var(--primary-color);
+            margin: 1.5rem 0 1rem 0;
+        }
+        
+        .tech-info h5 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .play-history-item {
+            background: var(--bg-light);
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .play-history-item .url {
+            flex: 1;
+            margin-right: 1rem;
+            word-break: break-all;
+            font-size: 0.875rem;
+        }
+        
+        .play-history-item .time {
+            color: var(--text-light);
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+        
+        .play-history-item button {
+            margin-left: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+    </style>
+</body>
+</html> 

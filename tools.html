@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线工具集合 - 知能工具站免费实用工具平台</title>
+    <meta name="description" content="知能工具站提供二维码生成、Base64编解码、JSON格式化、密码生成器、颜色选择器等多种免费在线工具。">
+    <meta name="keywords" content="知能,知能工具站,二维码生成器,Base64编解码,JSON格式化,密码生成器,颜色选择器,在线工具">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="canonical" href="https://zhineng-tech.ip-ddns.com/tools.html">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="assets/images/logo-design.svg" alt="知能工具站" class="logo">
+                <h1>知能工具站</h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="player.html" class="nav-link">视频播放器</a>
+                <a href="tools.html" class="nav-link active">在线工具</a>
+                <a href="articles.html" class="nav-link">技术文章</a>
+                <a href="about.html" class="nav-link">关于我们</a>
+            </nav>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- 页面标题 -->
+        <section class="hero">
+            <div class="container">
+                <h2>在线工具集合</h2>
+                <p>精选实用工具，提升您的工作效率</p>
+            </div>
+        </section>
+
+        <div class="container tools-section">
+            <!-- 二维码生成器 -->
+            <div class="tool-container" id="qr-generator">
+                <h3>🔳 二维码生成器</h3>
+                <div class="form-group">
+                    <label for="qr-text">要生成二维码的内容：</label>
+                    <textarea id="qr-text" class="form-control" placeholder="输入文本、网址或其他内容..." rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="qr-size">二维码大小：</label>
+                    <select id="qr-size" class="form-control">
+                        <option value="200">200x200</option>
+                        <option value="300" selected>300x300</option>
+                        <option value="400">400x400</option>
+                        <option value="500">500x500</option>
+                    </select>
+                </div>
+                <button onclick="generateQR()" class="btn-tool">生成二维码</button>
+                <div id="qr-result" class="result-container" style="display: none;">
+                    <div class="qr-code-result">
+                        <canvas id="qr-canvas"></canvas>
+                        <br><br>
+                        <button onclick="downloadQR()" class="btn-tool">下载二维码</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 广告位 -->
+            <div class="ad-section">
+                <div id="ad-container-tools-1" class="ad-sidebar"></div>
+            </div>
+
+            <!-- Base64编解码 -->
+            <div class="tool-container" id="base64">
+                <h3>🔒 Base64编解码工具</h3>
+                <div class="form-group">
+                    <label for="base64-input">输入内容：</label>
+                    <textarea id="base64-input" class="form-control" placeholder="输入要编码或解码的内容..." rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <button onclick="encodeBase64()" class="btn-tool">编码</button>
+                    <button onclick="decodeBase64()" class="btn-tool">解码</button>
+                    <button onclick="clearBase64()" class="btn-tool" style="background-color: #6b7280;">清空</button>
+                </div>
+                <div class="form-group">
+                    <label for="base64-output">结果：</label>
+                    <textarea id="base64-output" class="form-control" placeholder="编解码结果将显示在这里..." rows="4" readonly></textarea>
+                </div>
+            </div>
+
+            <!-- JSON格式化 -->
+            <div class="tool-container" id="json-formatter">
+                <h3>📄 JSON格式化工具</h3>
+                <div class="form-group">
+                    <label for="json-input">JSON输入：</label>
+                    <textarea id="json-input" class="form-control" placeholder='输入JSON数据，例如：{"name":"张三","age":25}' rows="6"></textarea>
+                </div>
+                <div class="form-group">
+                    <button onclick="formatJSON()" class="btn-tool">格式化</button>
+                    <button onclick="minifyJSON()" class="btn-tool">压缩</button>
+                    <button onclick="validateJSON()" class="btn-tool">验证</button>
+                    <button onclick="clearJSON()" class="btn-tool" style="background-color: #6b7280;">清空</button>
+                </div>
+                <div class="form-group">
+                    <label for="json-output">格式化结果：</label>
+                    <textarea id="json-output" class="form-control" placeholder="格式化后的JSON将显示在这里..." rows="8" readonly></textarea>
+                </div>
+                <div id="json-error" style="color: #ef4444; margin-top: 0.5rem; display: none;"></div>
+            </div>
+
+            <!-- 密码生成器 -->
+            <div class="tool-container" id="password-generator">
+                <h3>🔑 密码生成器</h3>
+                <div class="form-group">
+                    <label for="password-length">密码长度：<span id="length-display">12</span></label>
+                    <input type="range" id="password-length" min="4" max="50" value="12" class="form-control" 
+                           oninput="document.getElementById('length-display').textContent = this.value">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="include-uppercase" checked> 包含大写字母 (A-Z)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="include-lowercase" checked> 包含小写字母 (a-z)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="include-numbers" checked> 包含数字 (0-9)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="include-symbols"> 包含特殊字符 (!@#$%^&*)
+                    </label>
+                </div>
+                <button onclick="generatePassword()" class="btn-tool">生成密码</button>
+                <div class="form-group">
+                    <label for="generated-password">生成的密码：</label>
+                    <input type="text" id="generated-password" class="form-control" readonly>
+                    <button onclick="copyPassword()" class="btn-tool" style="margin-top: 0.5rem;">复制密码</button>
+                </div>
+                <div id="password-strength" class="password-strength"></div>
+            </div>
+
+            <!-- 广告位 -->
+            <div class="ad-section">
+                <div id="ad-container-tools-2" class="ad-banner"></div>
+            </div>
+
+            <!-- 颜色选择器 -->
+            <div class="tool-container" id="color-picker">
+                <h3>🎨 颜色选择器</h3>
+                <div class="form-group">
+                    <label for="color-input">选择颜色：</label>
+                    <input type="color" id="color-input" value="#3b82f6" onchange="updateColorInfo()" class="form-control" style="height: 60px;">
+                </div>
+                <div class="color-preview" id="color-preview"></div>
+                <div class="form-group">
+                    <label>颜色值：</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label for="hex-value">HEX:</label>
+                            <input type="text" id="hex-value" class="form-control" readonly>
+                        </div>
+                        <div>
+                            <label for="rgb-value">RGB:</label>
+                            <input type="text" id="rgb-value" class="form-control" readonly>
+                        </div>
+                        <div>
+                            <label for="hsl-value">HSL:</label>
+                            <input type="text" id="hsl-value" class="form-control" readonly>
+                        </div>
+                        <div>
+                            <label for="cmyk-value">CMYK:</label>
+                            <input type="text" id="cmyk-value" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="copyColorValue('hex')" class="btn-tool">复制HEX</button>
+                <button onclick="copyColorValue('rgb')" class="btn-tool">复制RGB</button>
+            </div>
+
+            <!-- URL编解码 -->
+            <div class="tool-container" id="url-encoder">
+                <h3>🌐 URL编解码工具</h3>
+                <div class="form-group">
+                    <label for="url-input">输入URL：</label>
+                    <textarea id="url-input" class="form-control" placeholder="输入要编码或解码的URL..." rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <button onclick="encodeURL()" class="btn-tool">编码</button>
+                    <button onclick="decodeURL()" class="btn-tool">解码</button>
+                    <button onclick="clearURL()" class="btn-tool" style="background-color: #6b7280;">清空</button>
+                </div>
+                <div class="form-group">
+                    <label for="url-output">结果：</label>
+                    <textarea id="url-output" class="form-control" placeholder="编解码结果将显示在这里..." rows="3" readonly></textarea>
+                </div>
+            </div>
+
+            <!-- 文本处理工具 -->
+            <div class="tool-container" id="text-tools">
+                <h3>📝 文本处理工具</h3>
+                <div class="form-group">
+                    <label for="text-input">输入文本：</label>
+                    <textarea id="text-input" class="form-control" placeholder="输入要处理的文本..." rows="5" oninput="updateTextStats()"></textarea>
+                </div>
+                <div class="form-group">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                        <button onclick="convertToUppercase()" class="btn-tool">转大写</button>
+                        <button onclick="convertToLowercase()" class="btn-tool">转小写</button>
+                        <button onclick="convertToTitle()" class="btn-tool">首字母大写</button>
+                        <button onclick="removeSpaces()" class="btn-tool">去除空格</button>
+                        <button onclick="reverseText()" class="btn-tool">反转文本</button>
+                        <button onclick="clearText()" class="btn-tool" style="background-color: #6b7280;">清空</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="text-output">处理结果：</label>
+                    <textarea id="text-output" class="form-control" placeholder="处理后的文本将显示在这里..." rows="5" readonly></textarea>
+                </div>
+                <div id="text-stats" style="margin-top: 1rem; color: #6b7280; font-size: 0.875rem;"></div>
+            </div>
+
+            <!-- 计算器工具 -->
+            <div class="tool-container" id="calculator">
+                <h3>🧮 多功能计算器</h3>
+                <div class="form-group">
+                    <label for="calc-display">计算器：</label>
+                    <input type="text" id="calc-display" class="form-control" readonly style="font-size: 1.5rem; text-align: right;">
+                </div>
+                <div class="calculator-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 1rem;">
+                    <button onclick="clearCalculator()" class="btn-tool" style="background-color: #ef4444;">C</button>
+                    <button onclick="deleteLast()" class="btn-tool" style="background-color: #f59e0b;">←</button>
+                    <button onclick="appendToDisplay('/')" class="btn-tool">÷</button>
+                    <button onclick="appendToDisplay('*')" class="btn-tool">×</button>
+                    
+                    <button onclick="appendToDisplay('7')" class="btn-tool">7</button>
+                    <button onclick="appendToDisplay('8')" class="btn-tool">8</button>
+                    <button onclick="appendToDisplay('9')" class="btn-tool">9</button>
+                    <button onclick="appendToDisplay('-')" class="btn-tool">-</button>
+                    
+                    <button onclick="appendToDisplay('4')" class="btn-tool">4</button>
+                    <button onclick="appendToDisplay('5')" class="btn-tool">5</button>
+                    <button onclick="appendToDisplay('6')" class="btn-tool">6</button>
+                    <button onclick="appendToDisplay('+')" class="btn-tool">+</button>
+                    
+                    <button onclick="appendToDisplay('1')" class="btn-tool">1</button>
+                    <button onclick="appendToDisplay('2')" class="btn-tool">2</button>
+                    <button onclick="appendToDisplay('3')" class="btn-tool">3</button>
+                    <button onclick="calculate()" class="btn-tool" style="background-color: #10b981; grid-row: span 2;">=</button>
+                    
+                    <button onclick="appendToDisplay('0')" class="btn-tool" style="grid-column: span 2;">0</button>
+                    <button onclick="appendToDisplay('.')" class="btn-tool">.</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>知能工具站</h4>
+                    <p>提供优质的在线工具服务</p>
+                </div>
+                <div class="footer-section">
+                    <h4>工具分类</h4>
+                    <ul>
+                        <li><a href="#qr-generator">二维码生成器</a></li>
+                        <li><a href="#base64">Base64编解码</a></li>
+                        <li><a href="#json-formatter">JSON格式化</a></li>
+                        <li><a href="#password-generator">密码生成器</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>友情链接</h4>
+                    <ul>
+                        <li><a href="https://news.zhinengtech.dpdns.org/" target="_blank" rel="noopener noreferrer">知能新闻站</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>联系我们</h4>
+                    <p>邮箱：l250061120@gmail.com</p>
+                    <p>QQ群：728132798</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 知能工具站. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="assets/js/security.js"></script>
+    <script src="assets/js/ad-manager.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/tools.js"></script>
+    <script>
+        // 加载工具页面广告
+        loadAd("tools");
+        
+        // 移动端菜单切换
+        function toggleMobileMenu() {
+            const nav = document.querySelector('.nav');
+            nav.classList.toggle('active');
+        }
+
+        // 初始化颜色选择器
+        updateColorInfo();
+        
+        // 初始化文本统计
+        updateTextStats();
+    </script>
+</body>
+</html> 

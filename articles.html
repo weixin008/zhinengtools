@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术文章 - 在线工具教程与技巧分享</title>
+    <meta name="description" content="提供在线工具使用教程、技术文章、开发技巧和最佳实践，帮助用户更好地使用各种工具提升工作效率。">
+    <meta name="keywords" content="技术文章,在线工具教程,开发技巧,工具使用指南,技术分享,编程教程">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="canonical" href="https://your-domain.com/articles.html">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="assets/images/logo.png" alt="聚合工具平台" class="logo">
+                <h1>聚合工具平台</h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="player.html" class="nav-link">视频播放器</a>
+                <a href="tools.html" class="nav-link">在线工具</a>
+                <a href="articles.html" class="nav-link active">技术文章</a>
+                <a href="about.html" class="nav-link">关于我们</a>
+            </nav>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- 页面标题 -->
+        <section class="hero">
+            <div class="container">
+                <h2>技术文章 & 教程</h2>
+                <p>分享实用技巧，提升工作效率</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- 文章列表 -->
+            <div class="articles-container">
+                <!-- 文章1 -->
+                <article class="article-full" id="article1">
+                    <div class="article-header">
+                        <h3>如何使用M3U8播放器观看直播和点播视频</h3>
+                        <div class="article-meta">
+                            <span class="author">作者：技术团队</span>
+                            <span class="date">发布时间：2024-01-15</span>
+                            <span class="category">分类：视频播放</span>
+                        </div>
+                    </div>
+                    
+                    <div class="article-content">
+                        <p>M3U8是一种基于HTTP Live Streaming (HLS)协议的播放列表格式，广泛用于视频直播和点播服务。本文将详细介绍如何使用我们的M3U8播放器。</p>
+                        
+                        <h4>什么是M3U8格式？</h4>
+                        <p>M3U8是苹果公司开发的HTTP Live Streaming协议的播放列表文件格式。它具有以下特点：</p>
+                        <ul>
+                            <li>自适应码率：根据网络状况自动调整视频质量</li>
+                            <li>分段传输：将视频分成多个小片段进行传输</li>
+                            <li>跨平台兼容：支持各种设备和浏览器</li>
+                            <li>低延迟：适合直播场景</li>
+                        </ul>
+
+                        <h4>如何使用播放器</h4>
+                        <ol>
+                            <li><strong>获取视频链接</strong>：确保你有一个有效的M3U8链接</li>
+                            <li><strong>打开播放器</strong>：访问我们的<a href="player.html">视频播放器页面</a></li>
+                            <li><strong>输入链接</strong>：在输入框中粘贴M3U8链接</li>
+                            <li><strong>开始播放</strong>：点击"加载视频"按钮开始播放</li>
+                        </ol>
+
+                        <h4>常见问题解决</h4>
+                        <div class="faq-section">
+                            <div class="faq-item">
+                                <h5>Q: 视频无法播放怎么办？</h5>
+                                <p>A: 请检查链接是否正确，确保网络连接稳定，某些链接可能有地域限制。</p>
+                            </div>
+                            <div class="faq-item">
+                                <h5>Q: 支持哪些浏览器？</h5>
+                                <p>A: 支持Chrome、Firefox、Safari、Edge等现代浏览器，建议使用最新版本。</p>
+                            </div>
+                            <div class="faq-item">
+                                <h5>Q: 移动端可以使用吗？</h5>
+                                <p>A: 可以，我们的播放器已优化移动端体验，支持触摸操作。</p>
+                            </div>
+                        </div>
+
+                        <div class="article-conclusion">
+                            <p>通过本教程，您应该已经掌握了M3U8播放器的基本使用方法。如果遇到其他问题，欢迎联系我们获取技术支持。</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 广告位 -->
+                <div class="ad-section">
+                    <div id="ad-container-article-1" class="ad-banner"></div>
+                </div>
+
+                <!-- 文章2 -->
+                <article class="article-full" id="article2">
+                    <div class="article-header">
+                        <h3>在线工具提升工作效率的10个技巧</h3>
+                        <div class="article-meta">
+                            <span class="author">作者：技术团队</span>
+                            <span class="date">发布时间：2024-01-14</span>
+                            <span class="category">分类：效率提升</span>
+                        </div>
+                    </div>
+                    
+                    <div class="article-content">
+                        <p>在数字化办公时代，合理使用在线工具可以显著提升工作效率。本文分享10个实用技巧，帮助您更好地利用各种在线工具。</p>
+                        
+                        <h4>1. 善用二维码生成器</h4>
+                        <p>二维码可以快速分享链接、文本或联系信息。使用我们的<a href="tools.html#qr-generator">二维码生成器</a>可以：</p>
+                        <ul>
+                            <li>快速分享网站链接</li>
+                            <li>生成WiFi密码二维码</li>
+                            <li>创建名片二维码</li>
+                            <li>制作活动签到码</li>
+                        </ul>
+
+                        <h4>2. JSON数据处理技巧</h4>
+                        <p>处理API数据时，JSON格式化工具必不可少：</p>
+                        <ul>
+                            <li>美化JSON数据便于阅读</li>
+                            <li>验证JSON格式是否正确</li>
+                            <li>压缩JSON减少传输大小</li>
+                            <li>提取特定字段数据</li>
+                        </ul>
+
+                        <h4>3. 密码安全管理</h4>
+                        <p>使用密码生成器创建强密码：</p>
+                        <ul>
+                            <li>设置合适的密码长度（建议12位以上）</li>
+                            <li>包含大小写字母、数字和特殊字符</li>
+                            <li>为不同账户使用不同密码</li>
+                            <li>定期更换重要账户密码</li>
+                        </ul>
+
+                        <h4>4. 颜色设计工具</h4>
+                        <p>设计工作中，颜色选择器可以帮助：</p>
+                        <ul>
+                            <li>获取准确的颜色值</li>
+                            <li>转换不同颜色格式</li>
+                            <li>保持设计一致性</li>
+                            <li>快速复制颜色代码</li>
+                        </ul>
+
+                        <h4>5. 文本处理技巧</h4>
+                        <p>文本工具可以批量处理内容：</p>
+                        <ul>
+                            <li>统一文本格式</li>
+                            <li>批量大小写转换</li>
+                            <li>去除多余空格</li>
+                            <li>统计字符数量</li>
+                        </ul>
+
+                        <div class="tips-box">
+                            <h4>💡 效率提升小贴士</h4>
+                            <ul>
+                                <li>将常用工具添加到书签</li>
+                                <li>学习工具的键盘快捷键</li>
+                                <li>建立工作流程模板</li>
+                                <li>定期清理工具使用历史</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 文章3 -->
+                <article class="article-full" id="article3">
+                    <div class="article-header">
+                        <h3>JSON数据处理完全指南</h3>
+                        <div class="article-meta">
+                            <span class="author">作者：技术团队</span>
+                            <span class="date">发布时间：2024-01-13</span>
+                            <span class="category">分类：数据处理</span>
+                        </div>
+                    </div>
+                    
+                    <div class="article-content">
+                        <p>JSON (JavaScript Object Notation) 是现代Web开发中最重要的数据交换格式之一。本指南将从基础到高级，全面介绍JSON的处理技巧。</p>
+                        
+                        <h4>JSON基础语法</h4>
+                        <p>JSON是一种轻量级的数据交换格式，具有以下特点：</p>
+                        <ul>
+                            <li>基于JavaScript语法，但独立于编程语言</li>
+                            <li>易于人阅读和编写</li>
+                            <li>易于机器解析和生成</li>
+                            <li>支持数组、对象、字符串、数字、布尔值和null</li>
+                        </ul>
+
+                        <h4>常见应用场景</h4>
+                        <div class="scenario-grid">
+                            <div class="scenario-item">
+                                <h5>API数据交换</h5>
+                                <p>REST API中最常用的数据格式</p>
+                            </div>
+                            <div class="scenario-item">
+                                <h5>配置文件</h5>
+                                <p>应用程序配置和设置存储</p>
+                            </div>
+                            <div class="scenario-item">
+                                <h5>数据存储</h5>
+                                <p>NoSQL数据库的文档存储格式</p>
+                            </div>
+                            <div class="scenario-item">
+                                <h5>前后端通信</h5>
+                                <p>Web应用中的数据传输</p>
+                            </div>
+                        </div>
+
+                        <h4>最佳实践</h4>
+                        <ol>
+                            <li><strong>命名规范</strong>：使用camelCase或snake_case</li>
+                            <li><strong>数据验证</strong>：始终验证JSON数据格式</li>
+                            <li><strong>错误处理</strong>：妥善处理解析错误</li>
+                            <li><strong>性能优化</strong>：避免过深的嵌套结构</li>
+                        </ol>
+
+                        <div class="code-example">
+                            <h5>示例代码：</h5>
+                            <pre><code>{
+  "user": {
+    "id": 1,
+    "name": "张三",
+    "email": "zhangsan@example.com",
+    "preferences": {
+      "theme": "dark",
+      "language": "zh-CN"
+    },
+    "tags": ["developer", "frontend"]
+  }
+}</code></pre>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 广告位 -->
+                <div class="ad-section">
+                    <div id="ad-container-article-2" class="ad-sidebar"></div>
+                </div>
+
+                <!-- 更多文章预告 -->
+                <div class="tool-container">
+                    <h3>📚 即将发布的文章</h3>
+                    <div class="upcoming-articles">
+                        <div class="upcoming-item">
+                            <h4>Base64编码原理与应用</h4>
+                            <p>深入了解Base64编码的工作原理和实际应用场景</p>
+                            <span class="coming-date">预计发布：2024-01-20</span>
+                        </div>
+                        <div class="upcoming-item">
+                            <h4>现代Web开发中的安全密码策略</h4>
+                            <p>探讨密码安全的最佳实践和实现方法</p>
+                            <span class="coming-date">预计发布：2024-01-25</span>
+                        </div>
+                        <div class="upcoming-item">
+                            <h4>移动端视频播放优化技巧</h4>
+                            <p>分享移动设备上视频播放的性能优化方案</p>
+                            <span class="coming-date">预计发布：2024-01-30</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 文章标签云 -->
+                <div class="tool-container">
+                    <h3>🏷️ 热门标签</h3>
+                    <div class="tags-cloud">
+                        <span class="tag">前端开发</span>
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">API</span>
+                        <span class="tag">工具使用</span>
+                        <span class="tag">效率提升</span>
+                        <span class="tag">数据处理</span>
+                        <span class="tag">Web安全</span>
+                        <span class="tag">移动开发</span>
+                        <span class="tag">视频处理</span>
+                        <span class="tag">JSON</span>
+                        <span class="tag">密码安全</span>
+                        <span class="tag">UI设计</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>聚合工具平台</h4>
+                    <p>提供优质的在线工具服务</p>
+                </div>
+                <div class="footer-section">
+                    <h4>技术文章</h4>
+                    <ul>
+                        <li><a href="#article1">M3U8播放器教程</a></li>
+                        <li><a href="#article2">效率提升技巧</a></li>
+                        <li><a href="#article3">JSON处理指南</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>联系我们</h4>
+                    <p>邮箱：contact@example.com</p>
+                    <p>QQ群：123456789</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 聚合工具平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        // 加载文章页面广告
+        loadAd("articles");
+        
+        // 移动端菜单切换
+        function toggleMobileMenu() {
+            const nav = document.querySelector('.nav');
+            nav.classList.toggle('active');
+        }
+
+        // 文章阅读时间统计
+        function trackReadingTime() {
+            const startTime = Date.now();
+            
+            window.addEventListener('beforeunload', () => {
+                const readingTime = Math.round((Date.now() - startTime) / 1000);
+                trackUserBehavior('article_reading_time', {
+                    duration: readingTime,
+                    article: document.title
+                });
+            });
+        }
+
+        // 初始化阅读统计
+        trackReadingTime();
+    </script>
+
+    <style>
+        .articles-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .article-full {
+            background: var(--bg-white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 3rem;
+        }
+        
+        .article-header h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+        }
+        
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            color: var(--text-light);
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .article-content h4 {
+            color: var(--text-dark);
+            margin: 2rem 0 1rem 0;
+            font-size: 1.25rem;
+        }
+        
+        .article-content h5 {
+            color: var(--primary-color);
+            margin: 1.5rem 0 0.5rem 0;
+        }
+        
+        .article-content p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+        
+        .article-content ul, .article-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .article-content li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        
+        .faq-section {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+        }
+        
+        .faq-item {
+            margin-bottom: 1rem;
+        }
+        
+        .faq-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .faq-item h5 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .scenario-item {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+        
+        .scenario-item h5 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .code-example {
+            background: #f8f9fa;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .code-example pre {
+            margin: 0;
+            overflow-x: auto;
+        }
+        
+        .code-example code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+        
+        .tips-box {
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            border: 1px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .tips-box h4 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        
+        .upcoming-articles {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .upcoming-item {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .upcoming-item h4 {
+            color: var(--text-dark);
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .upcoming-item p {
+            margin: 0.5rem 0;
+            color: var(--text-light);
+        }
+        
+        .coming-date {
+            color: var(--primary-color);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .tags-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .tag:hover {
+            background: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+        
+        .article-conclusion {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-top: 2rem;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .article-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .scenario-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+</html> 
