@@ -4,14 +4,14 @@
     
     // 广告配置
     const AD_CONFIG = {
-        // Google AdSense 配置（替换为你的实际ID）
+        // Google AdSense 配置（已配置真实ID）
         adsense: {
-            enabled: true, // 启用AdSense测试模式
-            publisherId: 'ca-pub-YOUR_ADSENSE_PUBLISHER_ID', // 替换为你的发布商ID
+            enabled: true, // 启用AdSense
+            publisherId: 'ca-pub-3499049125619384', // 真实的发布商ID
             slots: {
-                banner: 'YOUR_BANNER_SLOT_ID', // 横幅广告位ID（728x90）
-                sidebar: 'YOUR_SIDEBAR_SLOT_ID', // 侧边栏广告位ID（160x600）
-                footer: 'YOUR_FOOTER_SLOT_ID'  // 底部广告位ID（970x250）
+                banner: '3499049125619384', // 横幅广告位ID（728x90）
+                sidebar: '3499049125619384', // 侧边栏广告位ID（160x600）
+                footer: '3499049125619384'  // 底部广告位ID（970x250）
             }
         },
         
