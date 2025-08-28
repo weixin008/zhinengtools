@@ -559,7 +559,17 @@
 
             <!-- 广告区域 -->
             <div class="ad-section">
-                <div id="ad-container-tools-1" class="ad-banner"></div>
+                <!-- AdSense 横幅广告 -->
+                <div id="adsense-banner-1" class="ad-banner adsense-ad"></div>
+                
+                <!-- 侧边栏广告 -->
+                <div class="sidebar-ads">
+                    <div id="adsense-sidebar-1" class="sidebar-ad adsense-ad"></div>
+                    <div id="adsense-sidebar-2" class="sidebar-ad adsense-ad"></div>
+                </div>
+                
+                <!-- 底部广告 -->
+                <div id="adsense-footer" class="footer-ad adsense-ad"></div>
             </div>
 
         </div>
@@ -606,6 +616,13 @@
     <script>
         // 加载工具页面广告
         loadAd("tools");
+        
+        // 初始化工具页面专用广告
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initToolsPageAds === 'function') {
+                initToolsPageAds();
+            }
+        });
         
         // 移动端菜单切换
         function toggleMobileMenu() {

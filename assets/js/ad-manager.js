@@ -6,12 +6,12 @@
     const AD_CONFIG = {
         // Google AdSense 配置（替换为你的实际ID）
         adsense: {
-            enabled: false, // 申请通过后设为true
-            publisherId: 'ca-pub-xxxxxxxxxx', // 替换为你的发布商ID
+            enabled: true, // 启用AdSense测试模式
+            publisherId: 'ca-pub-YOUR_ADSENSE_PUBLISHER_ID', // 替换为你的发布商ID
             slots: {
-                banner: 'xxxxxxxxxx', // 横幅广告位ID
-                sidebar: 'xxxxxxxxxx', // 侧边栏广告位ID
-                article: 'xxxxxxxxxx'  // 文章内广告位ID
+                banner: 'YOUR_BANNER_SLOT_ID', // 横幅广告位ID（728x90）
+                sidebar: 'YOUR_SIDEBAR_SLOT_ID', // 侧边栏广告位ID（160x600）
+                footer: 'YOUR_FOOTER_SLOT_ID'  // 底部广告位ID（970x250）
             }
         },
         
@@ -35,10 +35,10 @@
         
         // PopCash配置
         popcash: {
-            enabled: false, // 申请通过后设为true
-            websiteId: 'xxxxxxxxxx', // 替换为你的Website ID
-            frequency: 3, // 每个用户每天最多显示3次
-            delay: 5000 // 页面加载5秒后显示
+            enabled: true, // 启用PopCash测试模式
+            websiteId: 'YOUR_POPCASH_WEBSITE_ID', // 替换为你的Website ID
+            frequency: 2, // 每个用户每天最多显示2次
+            delay: 30000 // 页面加载30秒后显示（避免影响用户体验）
         },
         
         // 广告显示策略
@@ -173,9 +173,18 @@
             const slotId = AD_CONFIG.adsense.slots[slotType];
             if (!slotId) return false;
             
+            // 设置不同广告位的尺寸
+            const adStyles = {
+                banner: 'display:block;width:728px;height:90px',
+                sidebar: 'display:block;width:160px;height:600px', 
+                footer: 'display:block;width:970px;height:250px'
+            };
+            
+            const style = adStyles[slotType] || 'display:block';
+            
             const adHTML = `
                 <ins class="adsbygoogle"
-                     style="display:block"
+                     style="${style}"
                      data-ad-client="${AD_CONFIG.adsense.publisherId}"
                      data-ad-slot="${slotId}"
                      data-ad-format="auto"
@@ -183,11 +192,13 @@
             `;
             
             container.innerHTML = adHTML;
+            container.classList.add('loaded');
             
             // 推送广告
             try {
                 (adsbygoogle = window.adsbygoogle || []).push({});
                 this.activeAds.set(containerId, 'adsense');
+                console.log(`AdSense ${slotType} ad loaded successfully`);
                 return true;
             } catch (e) {
                 console.error('AdSense error:', e);
@@ -504,8 +515,10 @@
             const containers = [
                 { id: 'ad-container-banner', type: 'banner' },
                 { id: 'ad-container-sidebar', type: 'sidebar' },
-                { id: 'ad-container-tools-1', type: 'sidebar' },
-                { id: 'ad-container-tools-2', type: 'banner' },
+                { id: 'adsense-banner-1', type: 'banner' },
+                { id: 'adsense-sidebar-1', type: 'sidebar' },
+                { id: 'adsense-sidebar-2', type: 'sidebar' },
+                { id: 'adsense-footer', type: 'footer' },
                 { id: 'ad-container-article-1', type: 'article' },
                 { id: 'ad-container-article-2', type: 'sidebar' },
                 { id: 'ad-container-player-1', type: 'banner' },
@@ -518,6 +531,28 @@
                 }
             });
         }, 1000);
+    };
+    
+    // 工具页面广告初始化
+    window.initToolsPageAds = function() {
+        // 确保广告管理器已初始化
+        AdManager.init();
+        
+        // 延迟加载广告，避免影响页面性能
+        setTimeout(() => {
+            const toolsAdContainers = [
+                { id: 'adsense-banner-1', type: 'banner' },
+                { id: 'adsense-sidebar-1', type: 'sidebar' },
+                { id: 'adsense-sidebar-2', type: 'sidebar' },
+                { id: 'adsense-footer', type: 'footer' }
+            ];
+            
+            toolsAdContainers.forEach(container => {
+                AdManager.displayAd(container.id, container.type);
+            });
+            
+            console.log('Tools page ads initialized');
+        }, 2000); // 页面加载2秒后显示广告
     };
     
 })(); 

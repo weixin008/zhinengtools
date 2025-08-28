@@ -2003,4 +2003,128 @@ textarea.form-control {
         flex-direction: column;
         text-align: center;
     }
+    
+    /* 移动端隐藏侧边栏广告 */
+    .sidebar-ads {
+        display: none !important;
+    }
+}
+
+/* 新增的广告样式 */
+/* AdSense 增强样式 */
+.adsense-banner {
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 2rem auto;
+    min-height: 120px;
+    max-width: 728px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.adsense-banner.loaded {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+/* 侧边栏广告 */
+.sidebar-ads {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar-ad {
+    width: 160px;
+    height: 600px;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: #64748b;
+    text-align: center;
+}
+
+.sidebar-ad.loaded {
+    background: transparent;
+    border: none;
+}
+
+/* 底部广告 */
+.footer-ad {
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 3rem auto;
+    min-height: 100px;
+    max-width: 970px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-ad.loaded {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+/* 广告占位符文字 */
+.adsense-ad:not(.loaded)::before {
+    content: "AdSense 广告位";
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+/* PopCash 弹窗样式 */
+.popup-ad-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-ad-content {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+}
+
+.popup-close:hover {
+    color: #333;
 } 
