@@ -36,7 +36,7 @@
         // PopCash配置
         popcash: {
             enabled: true, // 启用PopCash测试模式
-            websiteId: 'YOUR_POPCASH_WEBSITE_ID', // 替换为你的Website ID
+            websiteId: '24316', // 替换为你的Website ID
             frequency: 2, // 每个用户每天最多显示2次
             delay: 30000 // 页面加载30秒后显示（避免影响用户体验）
         },
